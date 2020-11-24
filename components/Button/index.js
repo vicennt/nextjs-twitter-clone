@@ -17,6 +17,12 @@ export default function Button ({ children, onClick}) {
                     padding: 8px 24px;
                     cursor: pointer;
                     transition: opacity .3s ease;
+                    display: flex;
+                    align-items: center;
+                }
+
+                button > :global(svg) {
+                    margin-right: 8px;
                 }
 
                 button:hover {

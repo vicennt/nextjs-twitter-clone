@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import AppLayout from '../components/AppLayout';
 import Button from '../components/Button';
+import GitHub from '../components/Icons/GitHub';
 import { breakpoints, fonts, colors } from "../styles/theme";
 
 
@@ -13,7 +14,10 @@ export default function Home() {
           <h1>Devter</h1>
           <h2>Talk about development with developers</h2>   
           <div>
-            <Button>Login with GitHub</Button> 
+            <Button>  
+              <GitHub fill='#ffff' width={24} height={24} />
+              Login with GitHub
+            </Button> 
           </div>
         </section>
       </AppLayout>
