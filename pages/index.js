@@ -15,7 +15,6 @@ export default function Home() {
       </AppLayout>
       
       <style jsx>{`
-
         section {
           display: grid;
           height: 100%;
@@ -37,8 +36,7 @@ export default function Home() {
           font-size: 16px;
           color: ${colors.secondary};
           margin: 0;
-        }
-        
+        }      
       `}</style>
     </div>
   )
