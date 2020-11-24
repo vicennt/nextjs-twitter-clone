@@ -1,3 +1,7 @@
+export const breakpoints = {
+    mobile: '520px'
+}
+
 export const fonts = {
     base: 'system-ui'
 }
