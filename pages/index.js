@@ -1,4 +1,6 @@
-import Head from 'next/head'
+import Head from 'next/head';
+import Link from 'next/link';
+import AppLayout from '../components/AppLayout';
 
 
 export default function Home() {
@@ -9,12 +11,12 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main>
-        <h1><a>devter</a></h1>
+      <AppLayout>
+        <h1><Link href="/"><a>devter</a></Link></h1>
         <nav>
-          <a href="/timeline">Timeline</a>
+          <Link href="/timeline"><a>Timeline</a></Link>
         </nav>
-      </main>
+      </AppLayout>
 
       <style jsx>
         {`
@@ -29,8 +31,6 @@ export default function Home() {
           }
         `}
       </style>
-
-
     </div>
   )
 }
