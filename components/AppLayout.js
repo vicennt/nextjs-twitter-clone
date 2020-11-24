@@ -1,6 +1,12 @@
+import Head from 'next/head';
+
 export default function AppLayout({ children }) {
   return (
     <>
+      <Head>
+        <title>Twitter dev</title>
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
       <main>{children}</main>
       <style jsx global>
         {`
