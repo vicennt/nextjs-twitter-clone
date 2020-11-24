@@ -2,10 +2,26 @@ import Link from 'next/link';
 import AppLayout from '../components/AppLayout';
 import Button from '../components/Button';
 import GitHub from '../components/Icons/GitHub';
-import { breakpoints, fonts, colors } from "../styles/theme";
+import { colors } from "../styles/theme";
+
+import { loginWithGitHub } from '../firebase/client';
+import { useState } from 'react';
 
 
 export default function Home() {
+
+  const [user, setUser] = useState(null);
+
+  const handleClick = () => {
+    loginWithGitHub().then(user => {
+      //const {avatar, url, username } = user;
+      console.log(user);
+      setUser(user);
+    }).catch(error => {
+      console.log(error);
+    })
+  }
+
   return (
     <div>
       <AppLayout>
@@ -14,10 +30,12 @@ export default function Home() {
           <h1>Devter</h1>
           <h2>Talk about development with developers</h2>   
           <div>
-            <Button>  
-              <GitHub fill='#ffff' width={24} height={24} />
-              Login with GitHub
-            </Button> 
+            {
+              user === null && <Button onClick={handleClick}>  
+                <GitHub fill='#ffff' width={24} height={24} />
+                Login with GitHub
+          </Button> 
+            }
           </div>
         </section>
       </AppLayout>
