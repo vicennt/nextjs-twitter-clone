@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import AppLayout from '../components/AppLayout';
+import Button from '../components/Button';
 import { breakpoints, fonts, colors } from "../styles/theme";
 
 
@@ -11,6 +12,9 @@ export default function Home() {
           <img src="/logo.png" alt="Logo"/>
           <h1>Devter</h1>
           <h2>Talk about development with developers</h2>   
+          <div>
+            <Button>Login with GitHub</Button> 
+          </div>
         </section>
       </AppLayout>
       
@@ -20,6 +24,10 @@ export default function Home() {
           height: 100%;
           place-items: center;
           place-content: center;
+        }
+
+        div {
+          margin-top: 16px;
         }
 
         img{
