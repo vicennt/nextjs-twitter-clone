@@ -24,7 +24,7 @@ const mapUserFromFirebaseAuthToUser = (user) => {
 export const onAuthStateChanged = (onChange) => {
   // Recibe la función setUser del componente Home
   return firebase.auth().onAuthStateChanged((user) => {
-    const normalizedUser = mapUserFromFirebaseAuthToUser(user);
+    const normalizedUser = user ? mapUserFromFirebaseAuthToUser(user) : null;
     onChange(normalizedUser);
   });
 };
