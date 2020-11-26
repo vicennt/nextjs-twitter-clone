@@ -1,6 +1,7 @@
 import AppLayout from "components/AppLayout";
 import Button from "components/Button";
 import GitHub from "components/Icons/GitHub";
+import Logo from "components/Icons/Logo";
 import { colors } from "styles/theme";
 
 import { loginWithGitHub, onAuthStateChanged } from "firebase/client";
@@ -28,7 +29,7 @@ export default function Home() {
     <div>
       <AppLayout>
         <section>
-          <img src="/logo.png" alt="Logo" />
+          <Logo width="200" />
           <h1>Devter</h1>
           <h2>Talk about development with developers</h2>
           <div>
@@ -70,6 +71,7 @@ export default function Home() {
         h1 {
           color: ${colors.primary};
           font-weight: 800;
+          font-size: 32px;
           margin-bottom: 8px;
         }
 
