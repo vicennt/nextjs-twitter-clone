@@ -4,22 +4,14 @@ import GitHub from "components/Icons/GitHub";
 import Logo from "components/Icons/Logo";
 import { colors } from "styles/theme";
 
-import { loginWithGitHub, onAuthStateChanged } from "firebase/client";
-import { useEffect, useState } from "react";
+import { loginWithGitHub } from "firebase/client";
+import { useEffect } from "react";
 import { useRouter } from "next/router";
-
-const USER_STATES = {
-  NOT_LOGGED: null,
-  NOT_KNOWN: undefined,
-};
+import useUser, { USER_STATES } from "hooks/useUser";
 
 export default function Home() {
-  const [user, setUser] = useState(USER_STATES.NOT_KNOWN);
+  const user = useUser();
   const router = useRouter();
-
-  useEffect(() => {
-    onAuthStateChanged(setUser);
-  }, []); // Al montar la aplicación
 
   useEffect(() => {
     // Vamos a la home si el usuario esta logueado
@@ -46,7 +38,7 @@ export default function Home() {
                 Login with GitHub
               </Button>
             )}
-            {user === USER_STATES.NOT_KNOWN && <span>Loaging...</span>}
+            {user === USER_STATES.NOT_KNOWN && <span>Loading...</span>}
           </div>
         </section>
       </AppLayout>
