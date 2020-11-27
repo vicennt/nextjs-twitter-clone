@@ -1,3 +1,5 @@
+import { useEffect, useState } from "react";
+
 const DATE_UNITS = [
   ["day", 86400],
   ["hour", 3600],
@@ -19,9 +21,21 @@ const getDateDiffs = (timestamp) => {
 };
 
 export default function useTimeAgo(timestamp) {
-  const { value, unit } = getDateDiffs(timestamp);
+  const [timeago, setTimeago] = useState(() => {
+    return getDateDiffs(timestamp);
+  });
+
+  useEffect(() => {
+    const timeout = setInterval(() => {
+      const newTimeAgo = getDateDiffs(timestamp);
+      setTimeago(newTimeAgo);
+    }, 1000);
+    return () => clearInterval(timeout);
+  }, [timestamp]);
+
   const relativeTimeFormat = new Intl.RelativeTimeFormat("es", {
     style: "short",
   });
+  const { value, unit } = timeago;
   return relativeTimeFormat.format(value, unit);
 }
