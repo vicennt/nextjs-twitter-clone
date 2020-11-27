@@ -22,17 +22,21 @@ export default function HomePage() {
           <h2>Inicio</h2>
         </header>
         <section>
-          {timeline.map((devit) => {
-            return (
-              <Devit
-                key={devit.id}
-                username={devit.userName}
-                avatar={devit.avatar}
-                message={devit.content}
-                id={devit.id}
-              />
-            );
-          })}
+          {timeline.map(
+            ({ createdAt, id, userName, avatar, content, userId }) => {
+              return (
+                <Devit
+                  avatar={avatar}
+                  createdAt={createdAt}
+                  id={id}
+                  key={id}
+                  content={content}
+                  userName={userName}
+                  userId={userId}
+                />
+              );
+            }
+          )}
         </section>
         <nav></nav>
       </AppLayout>
