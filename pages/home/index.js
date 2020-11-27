@@ -1,15 +1,18 @@
 import AppLayout from "components/AppLayout";
 import { useState, useEffect } from "react";
 import Devit from "components/Devit";
+import useUser from "hooks/useUser";
 
 export default function HomePage() {
   const [timeline, setTimeline] = useState([]);
+  const user = useUser();
 
   useEffect(() => {
-    fetch("http://localhost:3000/api/statuses/home_timeline")
-      .then((res) => res.json())
-      .then(setTimeline);
-  }, []);
+    user &&
+      fetch("http://localhost:3000/api/statuses/home_timeline")
+        .then((res) => res.json())
+        .then(setTimeline);
+  }, [user]);
 
   return (
     <>
@@ -22,7 +25,7 @@ export default function HomePage() {
             return (
               <Devit
                 key={devit.id}
-                username={devit.username}
+                username={devit.userName}
                 avatar={devit.avatar}
                 message={devit.message}
                 id={devit.id}
