@@ -44,11 +44,6 @@ export default function HomePage() {
           width: 100%;
         }
 
-        article {
-          display: flex;
-          padding: 10px 15px;
-        }
-
         h2 {
           font-size: 21px;
           font-weight: 700;

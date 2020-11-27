@@ -6,23 +6,30 @@ import { colors } from "styles/theme";
 
 import { loginWithGitHub, onAuthStateChanged } from "firebase/client";
 import { useEffect, useState } from "react";
-import Avatar from "components/Avatar";
+import { useRouter } from "next/router";
+
+const USER_STATES = {
+  NOT_LOGGED: null,
+  NOT_KNOWN: undefined,
+};
 
 export default function Home() {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState(USER_STATES.NOT_KNOWN);
+  const router = useRouter();
 
   useEffect(() => {
     onAuthStateChanged(setUser);
   }, []); // Al montar la aplicación
 
+  useEffect(() => {
+    // Vamos a la home si el usuario esta logueado
+    user && router.replace("/home");
+  }, [user]);
+
   const handleClick = () => {
-    loginWithGitHub()
-      .then((user) => {
-        setUser(user);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    loginWithGitHub().catch((error) => {
+      console.log(error);
+    });
   };
 
   return (
@@ -33,21 +40,13 @@ export default function Home() {
           <h1>Devter</h1>
           <h2>Talk about development with developers</h2>
           <div>
-            {user === null ? (
+            {user === USER_STATES.NOT_LOGGED && (
               <Button onClick={handleClick}>
                 <GitHub fill="#ffff" width={24} height={24} />
                 Login with GitHub
               </Button>
-            ) : (
-              <div>
-                <Avatar
-                  src={user.avatar}
-                  alt={user.username}
-                  text={user.username}
-                  withText
-                />
-              </div>
             )}
+            {user === USER_STATES.NOT_KNOWN && <span>Loaging...</span>}
           </div>
         </section>
       </AppLayout>
