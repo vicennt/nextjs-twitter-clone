@@ -3,9 +3,19 @@ import Button from "components/Button";
 import useUser from "hooks/useUser";
 import { useState } from "react";
 import { addDevit } from "firebase/client";
+import { useRouter } from "next/router";
+
+const COMPOSE_STATES = {
+  USER_NOT_KNWON: 0,
+  LOADING: 1,
+  SUCCESS: 2,
+  ERROR: -1,
+};
 
 export default function ComposeTweet() {
   const user = useUser();
+  const router = useRouter();
+  const [status, setStatus] = useState(COMPOSE_STATES.USER_NOT_KNWON);
   const [message, setMessage] = useState("");
 
   const handleChange = (event) => {
@@ -15,13 +25,24 @@ export default function ComposeTweet() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
+    setStatus(COMPOSE_STATES.LOADING);
     addDevit({
       avatar: user.avatar,
-      content: user.message,
+      content: message,
       userId: user.uid,
       userName: user.userName,
-    });
+    })
+      .then(() => {
+        router.push("/home");
+      })
+      .catch((err) => {
+        console.error(err);
+        setStatus(COMPOSE_STATES.ERROR);
+      });
   };
+
+  const isButtonDisabled =
+    message.length === 0 || status === COMPOSE_STATES.LOADING;
 
   return (
     <>
@@ -33,9 +54,7 @@ export default function ComposeTweet() {
             onChange={handleChange}
           />
           <div>
-            <Button disabled={message.length === 0 || message.length > 140}>
-              Devitear
-            </Button>
+            <Button disabled={isButtonDisabled}>Devitear</Button>
           </div>
         </form>
       </AppLayout>
