@@ -1,4 +1,5 @@
 import AppLayout from "components/AppLayout";
+import Avatar from "components/Avatar";
 import Button from "components/Button";
 import useUser from "hooks/useUser";
 import { useState, useEffect } from "react";
@@ -96,25 +97,32 @@ export default function ComposeTweet() {
         <Head>
           <title>Crear un devit / Devter</title>
         </Head>
-        <form onSubmit={handleSubmit}>
-          <textarea
-            placeholder="¿Qué esta pasando?"
-            value={message}
-            onChange={handleChange}
-            onDragEnter={handleDragEnter}
-            onDragLeave={handleDragLeave}
-            onDrop={handleDrop}
-          />
-          {imgURL && (
-            <section>
-              <button onClick={() => setImgURL(null)}>x</button>
-              <img src={imgURL} />
+        <section className="form-container">
+          {user && (
+            <section className="avatar-container">
+              <Avatar src={user.avatar} />
             </section>
           )}
-          <div>
-            <Button disabled={isButtonDisabled}>Devitear</Button>
-          </div>
-        </form>
+          <form onSubmit={handleSubmit}>
+            <textarea
+              placeholder="¿Qué esta pasando?"
+              value={message}
+              onChange={handleChange}
+              onDragEnter={handleDragEnter}
+              onDragLeave={handleDragLeave}
+              onDrop={handleDrop}
+            />
+            {imgURL && (
+              <section className="remove-image">
+                <button onClick={() => setImgURL(null)}>x</button>
+                <img src={imgURL} />
+              </section>
+            )}
+            <div>
+              <Button disabled={isButtonDisabled}>Devitear</Button>
+            </div>
+          </form>
+        </section>
       </AppLayout>
       <style jsx>{`
         div {
@@ -132,6 +140,20 @@ export default function ComposeTweet() {
           top: 15px;
           position: absolute;
           right: 15px;
+        }
+
+        .avatar-container {
+          padding-top: 20px;
+          padding-left: 10px;
+        }
+
+        .form-container {
+          align-items: flex-start;
+          display: flex;
+        }
+
+        .remove-img {
+          position: relative;
         }
 
         form {
