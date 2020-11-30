@@ -1,6 +1,7 @@
 import firebase from "firebase/app";
 import "firebase/auth";
 import "firebase/firestore";
+import "firebase/storage";
 
 const firebaseConfig = {
   apiKey: "AIzaSyAzANLds_bB4FT0RrbrxFt5qFTdd-uNcuA",
@@ -56,24 +57,25 @@ export const addDevit = ({ avatar, content, userId, userName }) => {
 export const fetchLatestDevits = () => {
   return db
     .collection("devits")
+    .orderBy("createdAt", "desc")
     .get()
     .then(({ docs }) => {
       return docs.map((doc) => {
         const data = doc.data();
         const id = doc.id;
         const { createdAt } = data;
-        console.log(createdAt);
-
-        const date = new Date(createdAt.seconds * 1000);
-        const normalizedCreatedAt = new Intl.DateTimeFormat("es-ES").format(
-          date
-        );
 
         return {
           ...data,
           id,
-          createdAt: normalizedCreatedAt,
+          createdAt: +createdAt.toDate(), // lo transformamos a numero
         };
       });
     });
+};
+
+export const uploadImage = (file) => {
+  const ref = firebase.storage().ref(`images/${file.name}`);
+  const task = ref.put(file);
+  return task;
 };

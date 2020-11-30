@@ -1,9 +1,10 @@
 import AppLayout from "components/AppLayout";
 import Button from "components/Button";
 import useUser from "hooks/useUser";
-import { useState } from "react";
-import { addDevit } from "firebase/client";
+import { useState, useEffect } from "react";
+import { addDevit, uploadImage } from "firebase/client";
 import { useRouter } from "next/router";
+import Head from "next/head";
 
 const COMPOSE_STATES = {
   USER_NOT_KNWON: 0,
@@ -12,15 +13,59 @@ const COMPOSE_STATES = {
   ERROR: -1,
 };
 
+const DRAG_IMAGE_STATES = {
+  ERROR: -1,
+  NONE: 0,
+  DRAG_OVER: 1,
+  UPLOADING: 2,
+  COMPLETE: 3,
+};
+
 export default function ComposeTweet() {
   const user = useUser();
   const router = useRouter();
   const [status, setStatus] = useState(COMPOSE_STATES.USER_NOT_KNWON);
   const [message, setMessage] = useState("");
+  const [drag, setDrag] = useState(DRAG_IMAGE_STATES.NONE);
+  const [task, setTask] = useState(null);
+  const [imgURL, setImgURL] = useState(null);
+
+  useEffect(() => {
+    if (task) {
+      const onProgress = () => {};
+      const onError = () => {};
+      const onComplete = () => {
+        console.log("onComplete");
+        task.snapshot.ref.getDownloadURL().then((imgURL) => {
+          setImgURL(imgURL);
+        });
+      };
+      task.on("state_changed", onProgress, onError, onComplete);
+    }
+  }, [task]);
 
   const handleChange = (event) => {
     const { value } = event.target;
     setMessage(value);
+  };
+
+  const handleDragEnter = (event) => {
+    event.preventDefault();
+    setDrag(DRAG_IMAGE_STATES.DRAG_OVER);
+  };
+
+  const handleDragLeave = (event) => {
+    event.preventDefault();
+    setDrag(DRAG_IMAGE_STATES.NONE);
+  };
+
+  const handleDrop = (event) => {
+    event.preventDefault();
+    setDrag(DRAG_IMAGE_STATES.NONE);
+    const file = event.dataTransfer.files[0];
+    console.log(file);
+    const task = uploadImage(file);
+    setTask(task);
   };
 
   const handleSubmit = (event) => {
@@ -47,12 +92,19 @@ export default function ComposeTweet() {
   return (
     <>
       <AppLayout>
+        <Head>
+          <title>Crear un devit / Devter</title>
+        </Head>
         <form onSubmit={handleSubmit}>
           <textarea
             placeholder="¿Qué esta pasando?"
             value={message}
             onChange={handleChange}
+            onDragEnter={handleDragEnter}
+            onDragLeave={handleDragLeave}
+            onDrop={handleDrop}
           />
+          {imgURL && <img src={imgURL} height="150px" width="150px" />}
           <div>
             <Button disabled={isButtonDisabled}>Devitear</Button>
           </div>
@@ -63,10 +115,17 @@ export default function ComposeTweet() {
           padding: 15px;
         }
 
+        form {
+          margin: 10px;
+        }
+
         textarea {
           width: 100%;
           font-size: 21px;
-          border: 0;
+          border: ${drag === DRAG_IMAGE_STATES.DRAG_OVER
+            ? "3px dashed #09f"
+            : "3px solid transparent"};
+          border-radius: 10px;
           padding: 15px;
           resize: none;
           min-height: 200px;

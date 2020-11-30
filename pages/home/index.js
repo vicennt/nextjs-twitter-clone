@@ -7,6 +7,7 @@ import { fetchLatestDevits } from "firebase/client";
 import Create from "components/Icons/Create";
 import Home from "components/Icons/Home";
 import Search from "components/Icons/Search";
+import Head from "next/head";
 import { colors } from "styles/theme";
 
 export default function HomePage() {
@@ -23,6 +24,9 @@ export default function HomePage() {
   return (
     <>
       <AppLayout>
+        <Head>
+          <title>Inicio / Devter</title>
+        </Head>
         <header>
           <h2>Inicio</h2>
         </header>
