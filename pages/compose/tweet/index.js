@@ -76,6 +76,7 @@ export default function ComposeTweet() {
       content: message,
       userId: user.uid,
       userName: user.userName,
+      img: imgURL,
     })
       .then(() => {
         router.push("/home");
@@ -104,7 +105,12 @@ export default function ComposeTweet() {
             onDragLeave={handleDragLeave}
             onDrop={handleDrop}
           />
-          {imgURL && <img src={imgURL} height="150px" width="150px" />}
+          {imgURL && (
+            <section>
+              <button onClick={() => setImgURL(null)}>x</button>
+              <img src={imgURL} />
+            </section>
+          )}
           <div>
             <Button disabled={isButtonDisabled}>Devitear</Button>
           </div>
@@ -115,8 +121,27 @@ export default function ComposeTweet() {
           padding: 15px;
         }
 
+        button {
+          background: rgba(0, 0, 0, 0.3);
+          border: 0;
+          border-radius: 999px;
+          color: #fff;
+          font-size: 24px;
+          width: 32px;
+          height: 32px;
+          top: 15px;
+          position: absolute;
+          right: 15px;
+        }
+
         form {
           margin: 10px;
+        }
+
+        img {
+          border-radius: 10px;
+          height: auto;
+          width: 100%;
         }
 
         textarea {

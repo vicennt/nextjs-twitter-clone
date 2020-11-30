@@ -42,12 +42,13 @@ export const loginWithGitHub = () => {
     .then(mapUserFromFirebaseAuthToUser);
 };
 
-export const addDevit = ({ avatar, content, userId, userName }) => {
+export const addDevit = ({ avatar, content, userId, userName, img }) => {
   return db.collection("devits").add({
     avatar,
     content,
     userId,
     userName,
+    img,
     createdAt: firebase.firestore.Timestamp.fromDate(new Date()),
     likesCount: 0,
     sharedCount: 0,
